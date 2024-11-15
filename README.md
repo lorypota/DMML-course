@@ -6,26 +6,23 @@ Welcome to the **Homework Folder** for our journey through Data Mining and Machi
 
 ## 📝 Assignments Overview
 
-### 📂 **Homework 1**
+### 📂 Homework 1 & Homework 2
 
-This is where we ease into the chaos. Topics _might_ include:
+Here’s the deal: The topics we’re covering in these assignments span a lot of ground. Instead of guessing how they’re split, we’re just going to list everything we know is part of the course and let the actual assignments surprise us. 🎉
 
 - **Module 1**: Introduction, Optimization, and Linear Algebra
   - Aka, "the math we pretend to remember."
 - **Module 2**: Regression and Regularization
   - Predicting the future (or just the next quiz score).
-  - Making models behave like they're not trying to sabotage us.
-
-### 📂 **Homework 2**
-
-The sequel, where things probably get spicy. Topics could be:
-
+  - Making models behave like they’re not trying to sabotage us.
 - **Module 3**: Classification
   - Turning data into boundaries and boundaries into bragging rights.
 - **Module 4**: Neural Networks
   - Teaching computers to think (or at least memorize).
 - **Module 5**: Unsupervised Learning
   - Grouping stuff when we don’t even know what’s in the box.
+
+We’re keeping it flexible, just like our expectations for how well this is going to go. 🚀
 
 ---
 
