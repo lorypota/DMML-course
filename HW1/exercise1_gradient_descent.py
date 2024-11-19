@@ -14,14 +14,9 @@ def f(u, v, b):
 
 # Gradient of f(u, v, b)
 def grad_f(u, v, b):
-    sig1 = sigmoid(u + b)
-    sig2 = sigmoid(v + b)
-    sig3 = sigmoid(-u / 2 - v / 2 - b)
-    
-    # Partial derivatives
-    df_du = -1/sig1*np.exp(-u-b)*sig1**2 - 1/sig3*np.exp(-u/2 -v/2 -b)*0.5*sig3**2 + (2*u)/100
-    df_dv = -1/sig2*np.exp(-v-b)*sig2**2 - 1/sig3*np.exp(-u/2 -v/2 -b)*0.5*sig3**2 + (2*v)/100
-    df_db = -1/sig1*sig1*np.exp(-u-b)*sig1**2 - 1/sig2*np.exp(-v-b)*sig2**2 - 1/sig3*sig3*np.exp(-u/2 -v/2 -b)*sig3**2 + (2*b)/100
+    df_du = -sigmoid(-u-b) + sigmoid(-u/2 -v/2 -b)*np.exp(u/2 +v/2 +b)/2 + u/50
+    df_dv = -sigmoid(-v-b) + sigmoid(-u/2 -v/2 -b)*np.exp(u/2 +v/2 +b)/2 + v/50
+    df_db = -sigmoid(-u-b) -sigmoid(-v-b) + sigmoid(-u/2 -v/2 -b)*np.exp(u/2 +v/2 +b) + b/50
     
     return np.array([df_du, df_dv, df_db])
 
