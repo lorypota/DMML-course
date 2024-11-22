@@ -34,13 +34,15 @@ def gradient_descent(f, grad_f, eta, initial_point, max_iter=100):
     
     return points, values
 
-# Step-size strategies
+# (1a)
 def eta_const(t, c=0.2):
     return c
 
+# (1b)
 def eta_sqrt(t, c=0.5):
     return c / np.sqrt(t + 1)
 
+# (1c)
 def eta_multistep(t, milestones=[30, 50, 80], c=0.5, eta_init=1.0):
     step = eta_init
     for milestone in milestones:
