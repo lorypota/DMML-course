@@ -1,24 +1,19 @@
 import numpy as np
-import sklearn
-from sklearn.preprocessing import PolynomialFeatures, StandardScaler
-#get the data
-print('The scikit-learn version is {}.'.format(sklearn.__version__))
-from sklearn.datasets import fetch_california_housing
-california = fetch_california_housing()
-# print(california.DESCR)
-D = california.data
-y = california.target
-n,d = D.shape
 
-#Scale de date
-scaler = StandardScaler()
-D_normalized = scaler.fit_transform(D)
+#3.b
+def get_beta_RSS_3_b(X,y):
+    X_T=X.T
+    M=X_T@X
+    if(np.linalg.det(M)<0.0001):#it is not invertible
+        print("The matrix is not invertible!!!")
+        return None
+    else:
+        inverse=np.linalg.inv(M)
+        beta=inverse@X_T@y
+        return beta 
 
 
-aff = PolynomialFeatures(2,include_bias=True)
-X = aff.fit_transform(D_normalized)
-aff.get_feature_names_out(california.feature_names)
-#2.a
-print(f"Number of samples: {n}")
-print(f"Number of features: {d}")
-print(f"Design matrix shape: {X.shape}")
+
+
+
+
