@@ -10,10 +10,10 @@ def argmin_x3(x):
     return (x[0]+x[1])/2-0.5
 
 #2b
-def coordinate_descent(f,argmin,x_0,max_iter=100):
+def coordinate_descent(argmin,x_0,max_iter=100):
     num_coordinates=len(x_0)
-    x_t=x_0
+    x_t=list(x_0)
     for _ in range(max_iter):
-        x_t_plus_1=[argmin[i](x_t) for i in range(num_coordinates)]
-        x_t=x_t_plus_1
+        for i in range(num_coordinates):
+            x_t[i]=argmin[i](x_t)
     return x_t
