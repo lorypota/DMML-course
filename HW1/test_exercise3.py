@@ -35,3 +35,9 @@ print("MedInc AveBedrms:"+str(beta[indexes["MedInc AveBedrms"]]))
 print("HouseAge AveBedrms:"+str(beta[indexes["HouseAge AveBedrms"]]))
 
 #3.c
+beta_c=get_beta_3_c(X,y,0.1)
+print("----------------------------------------")
+print("3c")
+print("MedInc:"+str(beta_c[indexes["MedInc"]]))
+print("MedInc AveBedrms:"+str(beta_c[indexes["MedInc AveBedrms"]]))
+print("HouseAge AveBedrms:"+str(beta_c[indexes["HouseAge AveBedrms"]]))
