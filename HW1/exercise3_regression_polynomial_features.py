@@ -1,13 +1,10 @@
 import numpy as np
 import sklearn
-print('The scikit-learn version is {}.'.format(sklearn.__version__))
 from sklearn.datasets import fetch_california_housing
 california = fetch_california_housing()
-print(california.DESCR)
 D = california.data
 y = california.target
 n,d = D.shape
-print(n,d)
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 scaler = StandardScaler()
 aff = PolynomialFeatures(2,include_bias=True)
