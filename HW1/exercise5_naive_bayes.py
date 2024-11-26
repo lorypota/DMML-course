@@ -10,7 +10,7 @@ def proportional_probabilities(target, categories):
     counts = np.bincount(target)
     length = len(target)
     for i, category in enumerate(categories):
-        results[category] = counts[i] / length
+        results[i] = counts[i] / length
     return results
 
 #5b
@@ -27,24 +27,17 @@ def laplace_proabability_word_given_target(word, category, matrix, dataset, vect
     number_of_repetitions_category = len(filtered_data)
 
     if (number_of_repetitions_category == 0):
-        print("Error, target no present in data")
+        print("Error, target not present in data")
         return 0
 
-    word_repeticion = sum(filtered_data)
+    word_repetition = sum(filtered_data)
 
     # number_possible_values= np.unique(dataset[:, column_index].toarray().flatten()).size
     # 2 since it is binary
-    return (word_repeticion+alpha)/(number_of_repetitions_category+alpha*2)
+    return (word_repetition+alpha)/(number_of_repetitions_category+alpha*2)
 
 
 # 5c
-category_names = {
-    0: 'rec.autos',
-    1: 'rec.motorcycles',
-    2: 'rec.sport.baseball',
-    3: 'rec.sport.hockey'
-}
-
 def compute_posterior_probability(word, category, matrix, dataset, vectorizer, categories):
     # P(Word|Category)
     likelihood = laplace_proabability_word_given_target(word, category, matrix, dataset, vectorizer, 0)
@@ -54,9 +47,7 @@ def compute_posterior_probability(word, category, matrix, dataset, vectorizer, c
 
     # P(Word) = sum(P(Word|Category_i) * P(Category_i))
     evidence = 0
-    for c in categories:
-        evidence += laplace_proabability_word_given_target(word, c, matrix, dataset, vectorizer, 0) * probabilities[c]
+    for i in range(0, 4):
+        evidence += laplace_proabability_word_given_target(word, i, matrix, dataset, vectorizer, 0) * probabilities[i]
 
-    print(probabilities)
-
-    return (likelihood * probabilities[category_names[category]]) / evidence
+    return (likelihood * probabilities[category]) / evidence
