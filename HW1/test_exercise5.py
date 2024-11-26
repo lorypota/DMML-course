@@ -16,7 +16,7 @@ D_test = vectorizer.transform(test.data)
 #5a
 probabilities = proportional_probabilities(categories=categories, target=train.target)
 for i, category in enumerate(categories):
-    print(f'Probability of {category}, y={i}: {probabilities[category]}')
+    print(f'Probability of {category}, y={i}: {probabilities[i]}')
 
 #5b
 for i, category in enumerate(categories):
