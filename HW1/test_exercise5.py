@@ -8,6 +8,9 @@ categories = ['rec.autos', 'rec.motorcycles',
 train = fetch_20newsgroups(subset='train', categories=categories)
 test = fetch_20newsgroups(subset='test', categories=categories)
 
-probabilities = proportional_probability(categories=categories, dataset=train.target)
+#5a
+probabilities = proportional_probability(categories=categories, target=train.target)
 for category in categories:
     print(f'Probability of {category}: {probabilities[category]}')
+
+#5b
