@@ -1,7 +1,11 @@
 import numpy as np
 
 #5a
-def proportional_probability(target, categories):
+def proportional_probability(target, category):
+    counts = np.bincount(target)
+    return counts[category] / len(target)
+
+def proportional_probabilities(target, categories):
     results = {}
     counts = np.bincount(target)
     length = len(target)
@@ -24,7 +28,7 @@ def laplace_proabability_word_given_target(word, category, matrix, dataset, vect
 
     if (number_of_repetitions_category == 0):
         print("Error, target no present in data")
-        return 0.
+        return 0
 
     word_repeticion = sum(filtered_data)
 
@@ -32,13 +36,27 @@ def laplace_proabability_word_given_target(word, category, matrix, dataset, vect
     # 2 since it is binary
     return (word_repeticion+alpha)/(number_of_repetitions_category+alpha*2)
 
-#5c
-def compute_posterior_probability(word, category, matrix,dataset,vectorizer,categories):
-    probabilities = proportional_probability(dataset.target,categories)
-    likelihood =laplace_proabability_word_given_target(word,category,matrix,dataset,vectorizer,0)
-    evidence = sum(
-        likelihood * probabilities[c]
-        for c in categories
-    )
-    posterior_probability = (likelihood* probabilities[category])  / evidence
-    return posterior_probability
+
+# 5c
+category_names = {
+    0: 'rec.autos',
+    1: 'rec.motorcycles',
+    2: 'rec.sport.baseball',
+    3: 'rec.sport.hockey'
+}
+
+def compute_posterior_probability(word, category, matrix, dataset, vectorizer, categories):
+    # P(Word|Category)
+    likelihood = laplace_proabability_word_given_target(word, category, matrix, dataset, vectorizer, 0)
+
+    # P(Category)
+    probabilities = proportional_probabilities(dataset.target, categories)
+
+    # P(Word) = sum(P(Word|Category_i) * P(Category_i))
+    evidence = 0
+    for c in categories:
+        evidence += laplace_proabability_word_given_target(word, c, matrix, dataset, vectorizer, 0) * probabilities[c]
+
+    print(probabilities)
+
+    return (likelihood * probabilities[category_names[category]]) / evidence
