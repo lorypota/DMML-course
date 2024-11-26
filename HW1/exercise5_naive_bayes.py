@@ -1,8 +1,11 @@
 import numpy as np
 
-def proportional_probability(dataset, categories):
+#5a
+def proportional_probability(target, categories):
     results = {}
-    counts = np.bincount(dataset)
+    counts = np.bincount(target)
     for i, category in enumerate(categories):
-        results[category] = counts[i] / len(dataset)
+        results[category] = counts[i] / len(target)
     return results
+
+#5b
