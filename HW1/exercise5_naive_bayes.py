@@ -28,3 +28,13 @@ def laplace_proabability_word_given_target(word,category,matrix,dataset,vectoriz
     # number_possible_values= np.unique(dataset[:, column_index].toarray().flatten()).size#should be 2 since it is binary
     return (word_repeticion+alpha)/(number_of_repetitions_category+alpha*2)
 
+#5c
+def compute_posterior_probability(word, category, matrix,dataset,vectorizer,categories):
+    probabilities = proportional_probability(dataset.target,categories)
+    likelihood =laplace_proabability_word_given_target(word,category,matrix,dataset,vectorizer,0)
+    evidence = sum(
+        likelihood * probabilities[c]
+        for c in categories
+    )
+    posterior_probability = (likelihood* probabilities[category])  / evidence
+    return posterior_probability
