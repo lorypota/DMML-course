@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from sklearn import datasets, metrics, svm
 from sklearn.model_selection import train_test_split
 import numpy as np
+from exercise7_kernel_SVM import *
 
 # import
 digits = datasets.load_digits()
@@ -35,3 +36,15 @@ print(
     f"Classification report for classifier {clf}:\n"
     f"{metrics.classification_report(y_test, predicted)}\n"
 )
+
+
+#7e
+values_parameters,acc=get_best_combination_and_score(D,y,[0.0001, 0.0006, 0.001, 0.006],[0.6, 0.8, 1, 2, 3, 4, 6],5)
+
+print(
+    f"7e. Beste combination values: C={values_parameters["C"]}, gamma={values_parameters["gamma"]}:\n"
+    f"Accuracy: {acc}"
+)
+
+# final_model = SVC(kernel='rbf', C=values_parameters['C'], gamma=values_parameters['gamma'])
+# final_model.fit(D, y)
