@@ -42,7 +42,7 @@ def compute_posterior_probability(word, category, matrix, dataset, vectorizer, c
     # P(Word|Category)
     likelihood = laplace_proabability_word_given_target(word, category, matrix, dataset, vectorizer, 0)
 
-    # P(Category)
+    # P(Category)=probabilities[category]
     probabilities = proportional_probabilities(dataset.target, categories)
 
     # P(Word) = sum(P(Word|Category_i) * P(Category_i))
