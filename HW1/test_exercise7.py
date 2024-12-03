@@ -41,10 +41,8 @@ print(
 n_sv_0 = clf.n_support_[0]
 n_sv_1 = clf.n_support_[1]
 dual_coef = clf.dual_coef_
-print(dual_coef.shape)
 coefficients_0_vs_1 = dual_coef[0][:n_sv_0+n_sv_1]
 num_support_vectors_0_vs_1 = (coefficients_0_vs_1 != 0).sum()
-print(coefficients_0_vs_1.size)
 print(num_support_vectors_0_vs_1)
 
 #7e
