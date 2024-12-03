@@ -49,21 +49,21 @@ print("support vectors between 0 and 1: ", num_support_vectors_0_vs_1, "\n")
 
 #7d
 coffeicients_in_0_against_1= dual_coef[0][:n_sv_0]
-four_highest_0_against_1= [index for index,coefficient in sorted(enumerate(coffeicients_in_0_against_1), key=lambda x:abs(x[1]), reverse=True)][:4]
-for i in four_highest_0_against_1:
-    array=clf.support_vectors_[i].copy()
+four_highest_0_against_1= sorted(enumerate(coffeicients_in_0_against_1), key=lambda x:abs(x[1]), reverse=True)[:4]
+for index,coef in four_highest_0_against_1:
+    array=clf.support_vectors_[index].copy()
     image = array.reshape(8, 8)
     plt.imshow(image, cmap='gray', interpolation='nearest')
-    plt.title("Vector class 0 against 1:")
+    plt.title("Vector class 0 against 1: abs(coefficient)="+str(abs(coef)))
     plt.colorbar()
     plt.show()
 coffeicients_in_1_against_0= dual_coef[0][n_sv_0:n_sv_1]
-four_highest_1_against_0= [index for index,coefficient in sorted(enumerate(coffeicients_in_1_against_0), key=lambda x:abs(x[1]), reverse=True)][:4]
-for i in four_highest_1_against_0:
-    array=clf.support_vectors_[n_sv_0+i].copy()
+four_highest_1_against_0= sorted(enumerate(coffeicients_in_1_against_0), key=lambda x:abs(x[1]), reverse=True)[:4]
+for index,coef in four_highest_1_against_0:
+    array=clf.support_vectors_[n_sv_0+index].copy()
     image = array.reshape(8, 8)
     plt.imshow(image, cmap='gray', interpolation='nearest')
-    plt.title("Vector class 1 against 0:")
+    plt.title("Vector class 1 against 0: abs(coefficient)="+str(abs(coef)))
     plt.colorbar()
     plt.show()
 
