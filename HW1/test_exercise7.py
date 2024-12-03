@@ -56,6 +56,7 @@ print("Number of support vectors between 0 and 1: ", num_support_vectors_0_vs_1,
 
 # 7d
 fig, axes = plt.subplots(2, 4, figsize=(15, 6))
+axes = axes.ravel()
 
 coefficients_in_0_against_1= dual_coef[0][:n_sv_0]
 four_highest_0_against_1 = sorted(enumerate(coefficients_in_0_against_1), key=lambda x: abs(x[1]), reverse=True)[:4]
@@ -66,17 +67,16 @@ four_highest_1_against_0= sorted(enumerate(coffeicients_in_1_against_0), key=lam
 for idx, (index, coef) in enumerate(four_highest_0_against_1):
     array = clf.support_vectors_[index].copy()
     image = array.reshape(8, 8)
-    axes[0, idx].imshow(image, cmap='gray', interpolation='nearest')
-    axes[0, idx].set_title(f'Class 0\nα = {abs(coef):.2f}')
-    axes[0, idx].axis('off')
-
+    axes[idx].set_axis_off()
+    axes[idx].imshow(image, cmap=plt.cm.gray_r, interpolation="nearest")
+    axes[idx].set_title(f"Class 0, α = {abs(coef):.2f}")
 
 for idx, (index, coef) in enumerate(four_highest_1_against_0):
     array = clf.support_vectors_[n_sv_0 + index].copy()
     image = array.reshape(8, 8)
-    axes[1, idx].imshow(image, cmap='gray', interpolation='nearest')
-    axes[1, idx].set_title(f'Class 1\nα = {abs(coef):.2f}')
-    axes[1, idx].axis('off')
+    axes[idx + 4].set_axis_off()
+    axes[idx + 4].imshow(image, cmap=plt.cm.gray_r, interpolation="nearest")
+    axes[idx + 4].set_title(f"Class 1, α = {abs(coef):.2f}")
 
 plt.tight_layout()
 plt.show()
