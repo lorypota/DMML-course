@@ -43,13 +43,13 @@ n_sv_1 = clf.n_support_[1]
 dual_coef = clf.dual_coef_
 coefficients_0_vs_1 = dual_coef[0][:n_sv_0+n_sv_1]
 num_support_vectors_0_vs_1 = (coefficients_0_vs_1 != 0).sum()
-print(num_support_vectors_0_vs_1)
+print("support vectors between 0 and 1: ", num_support_vectors_0_vs_1, "\n")
 
 #7e
 values_parameters,acc=get_best_combination_and_score(D,y,[0.0001, 0.0006, 0.001, 0.006],[0.6, 0.8, 1, 2, 3, 4, 6],5)
 
 print(
-    f"7e. Beste combination values: C={values_parameters["C"]}, gamma={values_parameters["gamma"]}:\n"
+    f"7e. Best combination values: C={values_parameters["C"]}, gamma={values_parameters["gamma"]}:\n"
     f"Accuracy: {acc}"
 )
 
