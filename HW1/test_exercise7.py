@@ -37,6 +37,15 @@ print(
     f"{metrics.classification_report(y_test, predicted)}\n"
 )
 
+#7c
+n_sv_1 = clf.n_support_[0]
+n_sv_2 = clf.n_support_[1]
+dual_coef = clf.dual_coef_
+print(dual_coef.shape)
+coefficients_0_vs_1 = dual_coef[0][:n_sv_1+n_sv_2]
+num_support_vectors_0_vs_1 = (coefficients_0_vs_1 != 0).sum()
+print(coefficients_0_vs_1.size)
+print(num_support_vectors_0_vs_1)
 
 #7e
 values_parameters,acc=get_best_combination_and_score(D,y,[0.0001, 0.0006, 0.001, 0.006],[0.6, 0.8, 1, 2, 3, 4, 6],5)
