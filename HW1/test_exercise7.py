@@ -39,13 +39,16 @@ print(
 )
 
 #7c
-n_sv_0 = clf.n_support_[0]
-n_sv_1 = clf.n_support_[1]
+n_sv_0 = clf.n_support_[0] # support vectors of class 0
+n_sv_1 = clf.n_support_[1] # support vectors of class 1
+
+# we get the first n_sv_0+n_sv_1 coefficients of row 1
 dual_coef = clf.dual_coef_
 coefficients_0_vs_1 = dual_coef[0][:n_sv_0+n_sv_1]
+
+# we check how many of them are different from 0
 num_support_vectors_0_vs_1 = (coefficients_0_vs_1 != 0).sum()
 print("support vectors between 0 and 1: ", num_support_vectors_0_vs_1, "\n")
-
 
 #7d
 coffeicients_in_0_against_1= dual_coef[0][:n_sv_0]
