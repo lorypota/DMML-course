@@ -16,7 +16,7 @@ y = digits.target
 D_train, D_test, y_train, y_test = train_test_split(
     D, y, test_size=0.3, shuffle=False
 )
-
+#7a
 clf = svm.SVC(gamma=0.0008, C=0.9)
 
 # Learn the digits on the train subset
@@ -31,6 +31,7 @@ for ax, image, prediction in zip(axes, D_test, predicted):
     image = image.reshape(8, 8)
     ax.imshow(image, cmap=plt.cm.gray_r, interpolation="nearest")
     ax.set_title(f"Prediction: {prediction}")
+    plt.close()
 
 print(
     f"Classification report for classifier {clf}:\n"
@@ -44,6 +45,30 @@ dual_coef = clf.dual_coef_
 coefficients_0_vs_1 = dual_coef[0][:n_sv_0+n_sv_1]
 num_support_vectors_0_vs_1 = (coefficients_0_vs_1 != 0).sum()
 print("support vectors between 0 and 1: ", num_support_vectors_0_vs_1, "\n")
+
+
+#7d
+coffeicients_in_0_against_1= dual_coef[0][:n_sv_0]
+four_highest_0_against_1= [index for index,coefficient in sorted(enumerate(coffeicients_in_0_against_1), key=lambda x:abs(x[1]), reverse=True)][:4]
+for i in four_highest_0_against_1:
+    array=clf.support_vectors_[i].copy()
+    image = array.reshape(8, 8)
+    plt.imshow(image, cmap='gray', interpolation='nearest')
+    plt.title("Vector class 0 against 1:")
+    plt.colorbar()
+    plt.show()
+coffeicients_in_1_against_0= dual_coef[0][n_sv_0:n_sv_1]
+four_highest_1_against_0= [index for index,coefficient in sorted(enumerate(coffeicients_in_1_against_0), key=lambda x:abs(x[1]), reverse=True)][:4]
+for i in four_highest_1_against_0:
+    array=clf.support_vectors_[n_sv_0+i].copy()
+    image = array.reshape(8, 8)
+    plt.imshow(image, cmap='gray', interpolation='nearest')
+    plt.title("Vector class 1 against 0:")
+    plt.colorbar()
+    plt.show()
+
+
+
 
 #7e
 values_parameters,acc=get_best_combination_and_score(D,y,[0.0001, 0.0006, 0.001, 0.006],[0.6, 0.8, 1, 2, 3, 4, 6],5)
