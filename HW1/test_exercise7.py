@@ -16,7 +16,9 @@ y = digits.target
 D_train, D_test, y_train, y_test = train_test_split(
     D, y, test_size=0.3, shuffle=False
 )
-#7a
+
+
+# 7a
 clf = svm.SVC(gamma=0.0008, C=0.9)
 
 # Learn the digits on the train subset
@@ -38,42 +40,49 @@ print(
     f"{metrics.classification_report(y_test, predicted)}\n"
 )
 
-#7c
-n_sv_0 = clf.n_support_[0] # support vectors of class 0
-n_sv_1 = clf.n_support_[1] # support vectors of class 1
+
+# 7c
+n_sv_0 = clf.n_support_[0]
+n_sv_1 = clf.n_support_[1]
 
 # we get the first n_sv_0+n_sv_1 coefficients of row 1
 dual_coef = clf.dual_coef_
 coefficients_0_vs_1 = dual_coef[0][:n_sv_0+n_sv_1]
 
-# we check how many of them are different from 0
+# check how many of them are different from 0
 num_support_vectors_0_vs_1 = (coefficients_0_vs_1 != 0).sum()
-print("support vectors between 0 and 1: ", num_support_vectors_0_vs_1, "\n")
+print("Number of support vectors between 0 and 1: ", num_support_vectors_0_vs_1, "\n")
 
-#7d
-coffeicients_in_0_against_1= dual_coef[0][:n_sv_0]
-four_highest_0_against_1= sorted(enumerate(coffeicients_in_0_against_1), key=lambda x:abs(x[1]), reverse=True)[:4]
-for index,coef in four_highest_0_against_1:
-    array=clf.support_vectors_[index].copy()
-    image = array.reshape(8, 8)
-    plt.imshow(image, cmap='gray', interpolation='nearest')
-    plt.title("Vector class 0 against 1: abs(coefficient)="+str(abs(coef)))
-    plt.colorbar()
-    plt.show()
-coffeicients_in_1_against_0= dual_coef[0][n_sv_0:n_sv_1]
+
+# 7d
+fig, axes = plt.subplots(2, 4, figsize=(15, 6))
+
+coefficients_in_0_against_1= dual_coef[0][:n_sv_0]
+four_highest_0_against_1 = sorted(enumerate(coefficients_in_0_against_1), key=lambda x: abs(x[1]), reverse=True)[:4]
+
+coffeicients_in_1_against_0 = dual_coef[0][n_sv_0:n_sv_0+n_sv_1]
 four_highest_1_against_0= sorted(enumerate(coffeicients_in_1_against_0), key=lambda x:abs(x[1]), reverse=True)[:4]
-for index,coef in four_highest_1_against_0:
-    array=clf.support_vectors_[n_sv_0+index].copy()
+
+for idx, (index, coef) in enumerate(four_highest_0_against_1):
+    array = clf.support_vectors_[index].copy()
     image = array.reshape(8, 8)
-    plt.imshow(image, cmap='gray', interpolation='nearest')
-    plt.title("Vector class 1 against 0: abs(coefficient)="+str(abs(coef)))
-    plt.colorbar()
-    plt.show()
+    axes[0, idx].imshow(image, cmap='gray', interpolation='nearest')
+    axes[0, idx].set_title(f'Class 0\nα = {abs(coef):.2f}')
+    axes[0, idx].axis('off')
 
 
+for idx, (index, coef) in enumerate(four_highest_1_against_0):
+    array = clf.support_vectors_[n_sv_0 + index].copy()
+    image = array.reshape(8, 8)
+    axes[1, idx].imshow(image, cmap='gray', interpolation='nearest')
+    axes[1, idx].set_title(f'Class 1\nα = {abs(coef):.2f}')
+    axes[1, idx].axis('off')
+
+plt.tight_layout()
+plt.show()
 
 
-#7e
+# 7e
 values_parameters,acc=get_best_combination_and_score(D,y,[0.0001, 0.0006, 0.001, 0.006],[0.6, 0.8, 1, 2, 3, 4, 6],5)
 
 print(
