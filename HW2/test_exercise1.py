@@ -19,7 +19,7 @@ print("Coordinates of the 8th data point in the low-dimensional space:",
 
 # 1c
 low_dimensional_data, V_r = PCA(D, 90)
-low_dim_vector = np.array([0.45] * 45 + [-0.45] * 45)
+low_dim_vector = np.array([0.5] * 45 + [-0.5] * 45)
 
 # Reconstruct the face
 reconstructed_face = np.dot(low_dim_vector, V_r) + np.mean(D, axis=0)
