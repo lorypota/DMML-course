@@ -67,7 +67,7 @@ def init_centroids_greedy_pp(D,r,l=10):
             i_min = random_index
 
     # X <- D^T
-    X = D[i_min].T
+    X = D[i_min].T.reshape(-1, 1)
 
     # s <- 2
     s = 2
@@ -80,7 +80,7 @@ def init_centroids_greedy_pp(D,r,l=10):
 
         probabilities = []
         for i in range(n):
-            probabilities[i] = distance(D[i], X) / sum
+            probabilities.append(distance(D[i], X) / sum)
 
         # Sample i_1, ..., i_l in {1, ..., n} independently with probability p_i
         indices_with_probability = np.random.choice(n, l, p=probabilities)
@@ -90,7 +90,7 @@ def init_centroids_greedy_pp(D,r,l=10):
         X_temp_min = None
         min_value = float('inf')
         for random_index in indices_with_probability:
-            X_temp = np.concatenate((X, D[random_index].T), axis=1)
+            X_temp = np.concatenate((X, D[random_index].T.reshape(-1, 1)), axis=1)
             sum = 0
             for j in range(n):
                 sum += distance(D[j], X_temp)
