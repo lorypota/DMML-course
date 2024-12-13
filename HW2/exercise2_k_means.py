@@ -49,11 +49,56 @@ def init_centroids_greedy_pp(D,r,l=10):
         :param l: (int) number of centroid candidates in each step
         :return: (np-array) 'X' the selected centroids from the dataset
     '''   
-    rng =  np.random.default_rng(seed=7) # use this random generator to sample the candidates (sampling according to given probabilities can be done via rng.choice(..))
+    rng =  np.random.default_rng(seed=7) # random generator to sample candidates (via rng.choice(..))
     n,d = D.shape
 
-    indexes = rng.integers(low=0, high=n, size=r)
-    X = np.array(D[indexes,:]).T
+    # Sample i_1, ..., i_l in {1, ..., n} uniformly at random
+    random_indices = rng.choice(n, l, replace=False)
+
+    # i <- arg min i in {i_1, ..., i_l} sum_{j=1}^n ||x_j - x_i||^2
+    min = float('inf')
+    i_min = -1
+    for random_index in random_indices:
+        sum = 0
+        for j in range(n):
+            sum += np.linalg.norm(D[j] - D[random_index])**2
+        if sum < min:
+            min = sum
+            i_min = random_index
+
+    # X <- D^T
+    X = D[i_min].T
+
+    # s <- 2
+    s = 2
+
+    while s <= r:
+        # Calculate propabilities p_i
+        sum = 0
+        for j in range(n):
+            sum += distance(D[j], X)
+
+        probabilities = []
+        for i in range(n):
+            probabilities[i] = distance(D[i], X) / sum
+
+        # Sample i_1, ..., i_l in {1, ..., n} independently with probability p_i
+        indices_with_probability = np.random.choice(n, l, p=probabilities)
+
+        # i <- arg min i in {i_1, ..., i_l} sum_{j=1}^n dist(D_j, [X | D_i^T])
+        X_temp = None
+        X_temp_min = None
+        min_value = float('inf')
+        for random_index in indices_with_probability:
+            X_temp = np.concatenate((X, D[random_index].T), axis=1)
+            sum = 0
+            for j in range(n):
+                sum += distance(D[j], X_temp)
+            if sum < min_value:
+                min_value = sum
+                X_temp_min = X_temp
+        X = X_temp_min
+        s += 1
     return X
 
 
@@ -78,55 +123,3 @@ def distance(v, X):
         if dist < min:
             min = dist
     return min
-
-
-def greedy_k_means(data, r, l):
-    # Sample i_1, ..., i_l in {1, ..., n} uniformly at random
-    n = data.shape[0]
-    random_indices = np.random.choice(n, l, replace=False)
-
-    # i <- arg min i in {i_1, ..., i_l} sum_{j=1}^n ||x_j - x_i||^2
-    min = float('inf')
-    i_min = -1
-    for random_index in random_indices:
-        sum = 0
-        for j in range(n):
-            sum += np.linalg.norm(data[j] - data[random_index])**2
-        if sum < min:
-            min = sum
-            i_min = random_index
-
-    # X <- D^T
-    X = data[i_min].T
-
-    # s <- 2
-    s = 2
-
-    while s <= r:
-        # Calculate propabilities p_i
-        sum = 0
-        for j in range(n):
-            sum += distance(data[j], X)
-
-        probabilities = []
-        for i in range(n):
-            probabilities[i] = distance(data[i], X) / sum
-
-        # Sample i_1, ..., i_l in {1, ..., n} independently with probability p_i
-        indices_with_probability = np.random.choice(n, l, p=probabilities)
-
-        # i <- arg min i in {i_1, ..., i_l} sum_{j=1}^n dist(D_j, [X | D_i^T])
-        X_temp = None
-        X_temp_min = None
-        min_value = float('inf')
-        for random_index in indices_with_probability:
-            X_temp = np.concatenate((X, data[random_index].T), axis=1)
-            sum = 0
-            for j in range(n):
-                sum += distance(data[j], X_temp)
-            if sum < min_value:
-                min_value = sum
-                X_temp_min = X_temp
-        X = X_temp_min
-        s += 1
-    return X
