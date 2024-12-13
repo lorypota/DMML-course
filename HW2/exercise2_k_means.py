@@ -123,3 +123,21 @@ def distance(v, X):
         if dist < min:
             min = dist
     return min
+
+import scipy
+def spectral_clustering(W,r, X_init):
+    '''
+        :param W: (np-array) nxn similarity/weighted adjacency matrix
+        :param r: (int) number of centroids (clusters)
+        :param X_init: (function) the centroid initialization function 
+        :return: (np-array) 'Y' the computed cluster assignment matrix
+    '''  
+    np.random.seed(0)
+    L = np.diag(np.array(W.sum(0))[0]) - W
+    v0 = np.random.rand(min(L.shape))
+    Lambda, V = scipy.sparse.linalg.eigsh(L, k=r+1, which="SM", v0=v0)
+    A = V[:,1:] #remove the first eigenvector, assuming that the graph is conected
+    initial_points = X_init(A,r)
+    X, Y = kmeans(A, r, initial_points)
+
+    return Y
