@@ -23,3 +23,4 @@ df_D = df_D.loc[keep_user, :]
 
 # Final preprocessed matrix
 D = df_D.to_numpy()
+
