@@ -2,6 +2,7 @@ import numpy as np
 import sklearn
 import sklearn.datasets
 from sklearn.metrics import normalized_mutual_info_score
+import scipy
 
 def RSS(D,X,Y):
     return np.sum((D- Y@X.T)**2)
@@ -123,8 +124,7 @@ def distance(v, X):
         if dist < min:
             min = dist
     return min
-
-import scipy
+#c
 def spectral_clustering(W,r, X_init):
     '''
         :param W: (np-array) nxn similarity/weighted adjacency matrix
@@ -137,7 +137,7 @@ def spectral_clustering(W,r, X_init):
     v0 = np.random.rand(min(L.shape))
     Lambda, V = scipy.sparse.linalg.eigsh(L, k=r+1, which="SM", v0=v0)
     A = V[:,1:] #remove the first eigenvector, assuming that the graph is conected
-    initial_points = X_init(A,r)
+    initial_points = X_init(A,r,l=10)
     X, Y = kmeans(A, r, initial_points)
 
     return Y
