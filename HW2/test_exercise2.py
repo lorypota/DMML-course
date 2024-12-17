@@ -19,13 +19,13 @@ print(f"Mean approximation error: {mean_error}")
 nmi_score = normalized_mutual_info_score(labels, cluster_labels)
 print(f"Normalized Mutual Information (NMI) score: {nmi_score}")
 
-# fig = plt.figure()
-# ax = plt.axes()
-# ax.axis('equal')
-# ax.scatter(D[:, 0], D[:, 1], c=np.argmax(Y,axis=1), s=10)
-# ax.scatter(X_init.T[:, 0], X_init.T[:, 1], c='red', s=50, marker = 'D') # initial centroids are in red
-# ax.scatter(X.T[:, 0], X.T[:, 1], c='blue', s=50, marker = 'D') # computed centroids are in blue
-# plt.show()
+fig = plt.figure()
+ax = plt.axes()
+ax.axis('equal')
+ax.scatter(D[:, 0], D[:, 1], c=np.argmax(Y,axis=1), s=10)
+ax.scatter(X_init.T[:, 0], X_init.T[:, 1], c='red', s=50, marker = 'D') # initial centroids are in red
+ax.scatter(X.T[:, 0], X.T[:, 1], c='blue', s=50, marker = 'D') # computed centroids are in blue
+plt.show()
 
 #2c
 dataID, D, labels, r = generateMoons(0.05,n=500)
