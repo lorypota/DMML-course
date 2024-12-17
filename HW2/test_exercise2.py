@@ -29,10 +29,17 @@ print(f"Normalized Mutual Information (NMI) score: {nmi_score}")
 
 #2c
 dataID, D, labels, r = generateMoons(0.05,n=500)
-# Implement here the computation of W as knn graph
-W = radius_neighbors_graph(D,0.5,include_self=False)
-Y = spectral_clustering(W,r,init_centroids_greedy_pp)
 
-plt.scatter(D[:, 0], D[:, 1], c=np.argmax(Y,axis=1), s=10)
-plt.title('%s'  % ( dataID) )
-plt.show()
+for kNN in [15, 25, 30, 35]:
+    # Implement here the computation of W as knn graph
+    # W = radius_neighbors_graph(D,0.5,include_self=False)
+    W = kneighbors_graph(D, n_neighbors=kNN, mode='connectivity', include_self=False).toarray()
+    X_init = init_centroids_greedy_pp(D, r=3, l=10)
+    Y = spectral_clustering(W,r,X_init)
+    cluster_labels = np.argmax(Y, axis=1)
+    nmi_score = normalized_mutual_info_score(labels, cluster_labels)
+    print(f"NMI for kNN={kNN}: {nmi_score}")
+
+    plt.scatter(D[:, 0], D[:, 1], c=np.argmax(Y,axis=1), s=10)
+    plt.title('%s'  % ( dataID) )
+    plt.show()
