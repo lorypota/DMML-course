@@ -21,5 +21,5 @@ df_D = df_movie_ratings.loc[:, keep_movie]
 keep_user = np.sum(df_D != 0, 1) >= 5
 df_D = df_D.loc[keep_user, :]
 
-# Final matrix
+# Final preprocessed matrix
 D = df_D.to_numpy()
