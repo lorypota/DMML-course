@@ -60,8 +60,17 @@ def average_squared_error(D, X, Y):
     # Average squared error
     avg_squared_error = squared_error / num_observed
     return avg_squared_error
+    
 
+def find_est_by_movie_id(D, X, Y, filtered_movie_ids, movie_id, user=0):
+    (n, d) = D.shape
+    assert X.shape[0] == n, "Number of rows in X does not match number of users."
+    assert Y.shape[0] == d, "Number of rows in Y does not match number of movies."
 
-def est_ratings(D, X, Y):
-    D_hat = Y @ X.T
-    print(D_hat)
+    new_movie_id = filtered_movie_ids.index(movie_id)
+    
+    D_estimated = Y @ X.T
+
+    predicted_rating = D_estimated[user, new_movie_id]
+
+    return predicted_rating
