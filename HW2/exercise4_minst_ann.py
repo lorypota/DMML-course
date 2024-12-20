@@ -138,19 +138,18 @@ class Embed(nn.Module):
         return out
     
 if __name__ == "__main__":
-    # Configuración de ejemplo
-    batch_size = 8
-    height, width = 64, 64  # Dimensiones espaciales de entrada
-    embedding_dim = 128  # Dimensión de salida
+    #Example configuration
+    batch_size = 128 
+    height, width = 28, 28  #MNIST dimensions
+    embedding_dim = 128  # output dimension (this is irrelevant)
 
-    # Crear el modelo
     model = Embed(embedding_dim=embedding_dim)
 
-    # Crear un tensor de entrada simulado
+    # Simulated input
     input_tensor = torch.randn(batch_size, 1, height, width)
 
-    # Pasar el tensor por el modelo
+    # use the input to get the output
     output = model(input_tensor)
 
-    # Imprimir la salida final
+    # Final Output
     print("Final output shape:", output.shape)
