@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
-from exercise3_netflix import matrix_completion, average_squared_error, est_ratings
+from exercise3_netflix import *
 
 MOVIES_PATH = os.path.join("HW2", "ml-latest-small", "movies.csv")
 RATINGS_PATH = os.path.join("HW2", "ml-latest-small", "ratings.csv")
@@ -26,13 +26,42 @@ df_D = df_movie_ratings.loc[:, keep_movie]
 keep_user = np.sum(df_D != 0, 1) >= 5
 df_D = df_D.loc[keep_user, :]
 
+# Track filtered movieIDs and userIDs
+filtered_movie_ids = df_D.columns
+filtered_user_ids = df_D.index
+movieId_to_title = dict(zip(movies['movieId'], movies['title']))
+
 # Final preprocessed matrix
 D = df_D.to_numpy()
 n, d = D.shape
 print("(n, d): (", n, ", ", d, ")")
 
+# Check if saved matrices exist; otherwise compute and save them
+X_file = "X_matrix.npy"
+Y_file = "Y_matrix.npy"
 
-X, Y = matrix_completion(D=D, n=n, d=d)
+if os.path.exists(X_file) and os.path.exists(Y_file):
+    print("Loading X and Y matrices from files...")
+    X = np.load(X_file)
+    Y = np.load(Y_file)
+else:
+    print("Calculating X and Y matrices...")
+    X, Y = matrix_completion(D=D, n=n, d=d)
+    np.save(X_file, X)
+    np.save(Y_file, Y)
+
+# 3a
 avg_sq_err = average_squared_error(D=D, X=X, Y=Y)
-print(f"AVG squared error:{avg_sq_err}")
-est_ratings(D, X, Y)
+print(f"AVG squared error:{avg_sq_err}\n\n")
+
+print(f"Estimation for first user and movie Finding Nemo (2003): {
+    find_est_by_movie_id(D, X, Y, filtered_movie_ids, 6377)}")
+
+print(f"Estimation for first user and movie Dark Knight, The (2008): {
+    find_est_by_movie_id(D, X, Y, filtered_movie_ids, 58559)}")
+
+print(f"Estimation for first user and movie Clueless (1995): {
+    find_est_by_movie_id(D, X, Y, filtered_movie_ids, 39)}")
+
+print(f"Estimation for first user and movie 2001: A Space Odyssey (1968): {
+    find_est_by_movie_id(D, X, Y, filtered_movie_ids, 924)}")
