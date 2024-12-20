@@ -50,10 +50,7 @@ else:
     np.save(X_file, X)
     np.save(Y_file, Y)
 
-print("Y shape:", Y.shape)
-print("X shape:", X.shape)
-print("D shape:", D.shape)
-
+# 3a
 avg_sq_err = average_squared_error(D=D, X=X, Y=Y)
 print(f"AVG squared error:{avg_sq_err}\n\n")
 
