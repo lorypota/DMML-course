@@ -24,6 +24,36 @@ def matrix_completion(D, n, d, r=20, t_max=100, λ=0.1):
 
     return X, Y
 
+
+def matrix_completion_lorenzo(D, r, n, d, t_max=100, λ=0.1):
+    # 1. init random X, Y
+    np.random.seed(0)
+    X = np.random.normal(size=(d, r))
+    Y = np.random.normal(size=(n, r))
+
+    # 2. indicator non zero
+    O = (D != 0).astype(int)
+
+    # 3. repeat t_max times
+    for t in range(t_max):
+        # 3.1. update X
+        for k in range(d):
+            # 3.1.1. Oxk <- diag(O1k, O2k, ..., Onk)
+            Oxk = np.diag(O[:, k])
+            # 3.1.2. Xk <- Dk^T * Y * (Y^T * Oxk * Y + λ * I)^-1
+            X[k, :] = D[k,
+                        :].T @ Y @ np.linalg.inv(Y.T @ Oxk @ Y + λ * np.eye(r))
+        # 3.2. update Y
+        for i in range(n):
+            # 3.2.1. Oi <- diag(Oi1, Oi2, ..., Oid)
+            Oyi = np.diag(O[i, :])
+            # 3.2.2. Yi <- Di * X * (X^T * Oi * X + λ * I)^-1
+            Y[i, :] = D[i,
+                        :] @ X @ np.linalg.inv(X.T @ Oyi @ X + λ * np.eye(r))
+
+    return X, Y
+
+
 def average_squared_error(D, X, Y):
     """
     Compute the average squared approximation error on the observed entries.
