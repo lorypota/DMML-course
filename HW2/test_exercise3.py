@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
+import os
 from exercise3_netflix import matrix_completion, average_squared_error, est_ratings
 
-MOVIES_PATH = "HW2\\ml-latest-small\\movies.csv"
-RATINGS_PATH = "HW2\\ml-latest-small\\ratings.csv"
+MOVIES_PATH = os.path.join("HW2", "ml-latest-small", "movies.csv")
+RATINGS_PATH = os.path.join("HW2", "ml-latest-small", "ratings.csv")
 
 # Load the data
 movies = pd.read_csv(MOVIES_PATH)
