@@ -3,7 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 #4a
-
+dropout_1 = 0.9
+dropout_2 = 0.9
 class ResBlock(nn.Module):
 
     def __init__(self, in_size:int, out_size:int, kernel_size:int, groups=1):
