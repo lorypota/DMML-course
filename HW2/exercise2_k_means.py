@@ -20,7 +20,7 @@ def update_assignment(D,X):
     dist = np.sum((np.expand_dims(D,2) - X)**2,1)
     labels = np.argmin(dist,1)
     return getY(labels)
-def kmeans(D,r, X_init, epsilon=0.00001, t_max=10000):
+def kmeans(D, r, X_init, epsilon=0.00001, t_max=10000):
     X = X_init.copy()
     Y = update_assignment(D,X)
     rss_old = RSS(D,X,Y) +2*epsilon
@@ -43,7 +43,7 @@ def generateBlobs(epsilon, n):
     return "blobs", blobs, labels, 3
 
 
-def init_centroids_greedy_pp(D,r,l=10):
+def init_centroids_greedy_pp(D, r, l=10):
     '''
         :param r: (int) number of centroids (clusters)
         :param D: (np-array) the data matrix
@@ -124,20 +124,22 @@ def distance(v, X):
         if dist < min:
             min = dist
     return min
-#c
-def spectral_clustering(W,r, X_init):
+
+
+#2c
+def spectral_clustering(W, r, X_init):
     '''
         :param W: (np-array) nxn similarity/weighted adjacency matrix
         :param r: (int) number of centroids (clusters)
         :param X_init: (function) the centroid initialization function 
         :return: (np-array) 'Y' the computed cluster assignment matrix
-    '''  
-    rng = np.random.default_rng(seed=0)
+    '''
+    np.random.seed(0)
     L = np.diag(np.array(W.sum(0))[0]) - W
-    v0 = rng.random(min(L.shape))
+    v0 = np.random.rand(min(L.shape))
     Lambda, V = scipy.sparse.linalg.eigsh(L, k=r+1, which="SM", v0=v0)
-    A = V[:,1:] #remove the first eigenvector, assuming that the graph is conected
-    initial_points = X_init(A,r,l=10)
+    A = V[:, 1:]  # remove the first eigenvector, assuming that the graph is conected
+    initial_points = X_init(A, r)
     X, Y = kmeans(A, r, initial_points)
 
     return Y
