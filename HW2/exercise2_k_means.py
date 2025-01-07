@@ -50,12 +50,11 @@ def init_centroids_greedy_pp(D, r, l=10):
         :param l: (int) number of centroid candidates in each step
         :return: (np-array) 'X' the selected centroids from the dataset
     '''   
-    # rng =  np.random.default_rng(seed=7) # random generator to sample candidates (via rng.choice(..))
-    np.random.seed(7)
+    rng =  np.random.default_rng(seed=7) # random generator to sample candidates (via rng.choice(..))
     n, d = D.shape
 
     # Sample i_1, ..., i_l in {1, ..., n} uniformly at random
-    random_indices = np.random.choice(n, l, replace=False)
+    random_indices = rng.choice(n, l, replace=False)
 
     # i <- arg min i in {i_1, ..., i_l} sum_{j=1}^n ||x_j - x_i||^2
     min = float('inf')
@@ -84,9 +83,8 @@ def init_centroids_greedy_pp(D, r, l=10):
         for i in range(n):
             probabilities.append(distance(D[i], X) / sum)
 
-        np.random.seed(7)
         # Sample i_1, ..., i_l in {1, ..., n} independently with probability p_i
-        indices_with_probability = np.random.choice(n, l, p=probabilities)
+        indices_with_probability = rng.choice(n, l, p=probabilities)
 
         # i <- arg min i in {i_1, ..., i_l} sum_{j=1}^n dist(D_j, [X | D_i^T])
         X_temp = None
