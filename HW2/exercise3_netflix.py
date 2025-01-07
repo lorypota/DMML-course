@@ -30,7 +30,23 @@ def matrix_completion(D, n, d, r=20, t_max=100, λ=0.1):
             fact = np.linalg.inv(fact)
             Y[i, :] =  D[i, :] @ X @ fact
 
+    check_3b(O, X, Y)
+
     return X, Y
+
+def check_3b(O, X, Y):
+    # Compute mean of missing entries
+    YX_T = Y @ X.T
+    missing_entries = YX_T[O == 0]
+    print(f"Mean of missing entries: {np.mean(missing_entries)}")
+
+    # Compute the number of missing value imputations outside [0.5, 5]
+    count_out_of_range = np.sum((missing_entries < 0.5) | (missing_entries > 5))
+    print(f"Number of missing value imputations outside [0.5, 5]: {count_out_of_range}")
+
+    # Compute variance of missing value imputations
+    variance_missing = np.var(missing_entries)
+    print(f"Variance of missing value imputations: {variance_missing}")
 
 
 def average_squared_error(D, X, Y):
