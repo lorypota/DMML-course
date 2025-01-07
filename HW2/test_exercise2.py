@@ -40,9 +40,9 @@ for i, kNN in enumerate([5, 10, 20, 40]):
     # Implement here the computation of W as knn graph
     W = kneighbors_graph(D, n_neighbors=kNN, include_self=False)
 
-    rng = np.random.default_rng(seed=0)
+    np.random.seed(0)
     L = np.diag(np.array(W.sum(0))[0]) - W
-    v0 = rng.random(min(L.shape))
+    v0 = np.random.rand(min(L.shape))
     Lambda, V = scipy.sparse.linalg.eigsh(L, k=r+1, which="SM", v0=v0)
     A = V[:, 1:]  # remove the first eigenvector, assuming that the graph is conected
 
